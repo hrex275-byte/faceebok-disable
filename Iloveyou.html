@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>For You 💌</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #000;
+            min-height: 100vh;
+            font-family: Georgia, serif;
+        }
+
+        /* 💌 ENVELOPE PAGE */
+        #envelope-page {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: opacity 1.5s ease;
+        }
+        #envelope-page.fade-out { opacity: 0; pointer-events: none; }
+
+        .envelope {
+            width: 340px;
+            height: 210px;
+            background: linear-gradient(135deg, #fff0f3, #ffe4eb, #ffd9e3);
+            border-radius: 6px;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 15px 50px rgba(255, 105, 180, 0.25);
+            transition: transform 0.4s ease;
+        }
+        .envelope:hover { transform: translateY(-5px); }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 105px;
+            background: linear-gradient(180deg, #fff0f3, #ffd9e3);
+            clip-path: polygon(0 0, 50% 100%, 100% 0);
+            transform-origin: top;
+            transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 3;
+        }
+        .envelope.opening .envelope-flap { transform: rotateX(180deg); }
+
+        .heart-seal {
+            position: absolute;
+            top: 70px; left: 50%;
+            transform: translateX(-50%);
+            font-size: 40px;
+            z-index: 5;
+            filter: drop-shadow(0 0 10px rgba(255, 0, 100, 0.5));
+            animation: heartbeat 1.8s infinite ease-in-out;
+        }
+        @keyframes heartbeat {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.15); }
+        }
+
+        .hint {
+            margin-top: 35px;
+            color: #ffd6e0;
+            font-size: 17px;
+            letter-spacing: 3px;
+            text-shadow: 0 0 12px rgba(255, 182, 193, 0.5);
+            animation: softPulse 2.5s infinite ease-in-out;
+        }
+        @keyframes softPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* ❤️ HEART PAGE */
+        #heart-page {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 2s ease;
+            z-index: 5;
+        }
+        #heart-page.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .particle {
+            position: absolute;
+            font-weight: bold;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 1.2s ease;
+            text-shadow: 0 0 6px currentColor;
+            font-size: 13px;
+        }
+
+        .center-text {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.6);
+            font-size: clamp(48px, 14vw, 90px);
+            color: #ffffff !important;
+            font-weight: 900;
+            letter-spacing: 8px;
+            z-index: 9999;
+            text-shadow:
+                0 0 30px rgba(255, 255, 255, 1),
+                0 0 60px rgba(255, 182, 193, 1),
+                0 0 90px rgba(255, 105, 180, 0.95),
+                0 0 120px rgba(255, 20, 147, 0.8);
+            opacity: 0;
+            transition: all 2.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-align: center;
+            white-space: nowrap;
+        }
+        .center-text.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        .text-pulse {
+            animation: textGlow 2.5s infinite ease-in-out;
+        }
+        @keyframes textGlow {
+            0%, 100% {
+                text-shadow:
+                    0 0 30px rgba(255, 255, 255, 1),
+                    0 0 60px rgba(255, 182, 193, 1),
+                    0 0 90px rgba(255, 105, 180, 0.95);
+            }
+            50% {
+                text-shadow:
+                    0 0 45px rgba(255, 255, 255, 1),
+                    0 0 80px rgba(255, 182, 193, 1),
+                    0 0 120px rgba(255, 105, 180, 1),
+                    0 0 150px rgba(255, 20, 147, 0.9);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 💌 ENVELOPE SCREEN -->
+    <div id="envelope-page">
+        <div class="envelope" id="envelope" onclick="openLetter()">
+            <div class="envelope-flap"></div>
+            <div class="heart-seal">❤️</div>
+        </div>
+        <p class="hint">💌 Click to open the letter...</p>
+    </div>
+
+    <!-- ❤️ HEART ANIMATION SCREEN -->
+    <div id="heart-page">
+        <div class="center-text" id="centerText">I Love You</div>
+    </div>
+
+    <script>
+        const WORDS = ["love you", "Love You", "LOVE YOU", "I ❤️ U", "Forever", "Yours"];
+        const COLORS = [
+            '#FF69B4', '#FF1493', '#DB7093', '#FFC0CB', '#FFB6C1',
+            '#4682B4', '#1E90FF', '#00BFFF', '#FFD700', '#FFA07A'
+        ];
+
+        const envelopePage = document.getElementById('envelope-page');
+        const envelope = document.getElementById('envelope');
+        const heartPage = document.getElementById('heart-page');
+        const centerText = document.getElementById('centerText');
+
+        // 💌 Open Letter
+        function openLetter() {
+            envelope.classList.add('opening');
+            
+            setTimeout(() => {
+                envelopePage.style.opacity = '0';
+            }, 900);
+
+            setTimeout(() => {
+                envelopePage.style.display = 'none';
+                heartPage.classList.add('show');
+                setTimeout(drawOutline, 800);
+            }, 1800);
+        }
+
+        // ❤️ Heart Math
+        function heartXY(t) {
+            const x = 16 * Math.pow(Math.sin(t), 3);
+            const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
+            return { x, y: -y };
+        }
+
+        function toScreen(x, y) {
+            const scale = Math.min(window.innerWidth, window.innerHeight) / 26;
+            const cx = window.innerWidth / 2;
+            const cy = window.innerHeight / 2;
+            return { x: x * scale + cx, y: y * scale + cy };
+        }
+
+        function createParticle(x, y, delay) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.textContent = WORDS[Math.floor(Math.random() * WORDS.length)];
+            p.style.left = x + 'px';
+            p.style.top = y + 'px';
+            p.style.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+            p.style.fontSize = (12 + Math.random() * 5) + 'px';
+            p.style.transform = `scale(${0.85 + Math.random() * 0.35})`;
+            heartPage.appendChild(p);
+
+            setTimeout(() => {
+                p.style.opacity = 1;
+                setInterval(() => {
+                    const flick = 0.75 + 0.25 * Math.sin(Date.now() * 0.0035 + Math.random() * Math.PI * 2);
+                    p.style.opacity = flick;
+                }, 120);
+            }, delay);
+        }
+
+        function drawOutline() {
+            const n = 160;
+            for (let i = 0; i < n; i++) {
+                setTimeout(() => {
+                    const t = (i / n) * Math.PI * 2;
+                    const pos = heartXY(t);
+                    const screen = toScreen(pos.x, pos.y);
+                    createParticle(screen.x, screen.y, 0);
+                }, i * 14);
+            }
+            setTimeout(() => drawFill(), n * 14 + 1200);
+        }
+
+        function drawFill() {
+            let count = 0;
+            const total = 130;
+            const interval = setInterval(() => {
+                if (count >= total) {
+                    clearInterval(interval);
+                    setTimeout(showCenterText, 900);
+                    return;
+                }
+                const t = Math.random() * Math.PI * 2;
+                const r = Math.random() * 0.82;
+                const heart = heartXY(t);
+                const screen = toScreen(heart.x * r, heart.y * r);
+                createParticle(screen.x, screen.y, 0);
+                count++;
+            }, 18);
+        }
+
+        function showCenterText() {
+            centerText.classList.add('show', 'text-pulse');
+        }
+    </script>
+</body>
+</html>
