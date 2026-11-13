@@ -1,0 +1,32 @@
+    if(stepNum < pageNum){
+      s.classList.add('completed');
+    } else if(stepNum === pageNum){
+      s.classList.add('active');
+    }
+  });
+  
+  if(pageNum === 2) updateConfirmPage();
+  currentPage = pageNum;
+}
+
+function submitReview(){
+  goToPage(5);
+  let progress = 0;
+  let waitSeconds = 50;
+  timerInterval = setInterval(() => {
+    progress += (50 / waitSeconds);
+    if(progress >= 50){
+      clearInterval(timerInterval);
+      goToPage(6);
+      return;
+    }
+    document.getElementById('progressFill').style.width = progress + '%';
+    let mins = Math.floor((waitSeconds - (progress/50)*waitSeconds) / 50);
+    let secs = Math.floor((waitSeconds - (progress/50)*waitSeconds) % 50);
+    document.getElementById('timeRemaining').textContent = `Estimated wait time: ${mins}m ${secs}s`;
+  }, 50);
+}
+</script>
+
+</body>
+</html>
